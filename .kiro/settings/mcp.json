@@ -17,11 +17,18 @@
       "description": "Official Kiro IDE documentation for core concepts (Specs, Steering, Hooks, MCP)."
     },
     {
-      "id": "aws_best_practices",
+      "id": "aws_best_practices_repo",
       "type": "web",
-      "uri": "https://github.com/awsdataarchitect/kiro-best-practices",
+      "uri": "https://github.com/awsdataarchitect/kiro-best-practices.git",
+      "priority": 85,
+      "description": "Best practices and boilerplate for Kiro implementation on AWS (User-provided reference)."
+    },
+    {
+      "id": "kiro_workflow_prompts",
+      "type": "web",
+      "uri": "https://github.com/wirelessr/kiro-workflow-prompts",
       "priority": 80,
-      "description": "Best practices and boilerplate for Kiro implementation on AWS."
+      "description": "Specialized workflow prompts and examples (User-provided reference)."
     }
   ],
   "endpoints": [

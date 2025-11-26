@@ -1,6 +1,7 @@
-# توجيه هيكل المشروع (Project Structure Steering)
+'''# التوجيه الهيكلي والمعماري (Architectural and Structural Steering)
 
-هذا الملف يحدد المبادئ التوجيهية لهيكلة المشروع، بما في ذلك تنظيم الملفات، الاتفاقيات المعمارية، واتفاقيات التسمية. يجب على وكلاء الذكاء الاصطناعي الالتزام بهذه المبادئ عند إنشاء أو تعديل أي ملفات أو مجلدات.
+## المبدأ الأساسي: الفصل الواضح للمسؤوليات (Clear Separation of Concerns)
+يجب أن يتم تنظيم المشروع بطريقة تعكس الفصل الواضح للمسؤوليات المعمارية، مما يضمن قابلية الصيانة والتوسع.
 
 ## 1. تنظيم المستوى الجذري (Root Level Organization)
 
@@ -8,11 +9,11 @@
 
 | المجلد | الوصف | التوجيه المعماري |
 | :--- | :--- | :--- |
-| `client/` | تطبيق الواجهة الأمامية (Frontend Application) (مثلاً: Flutter، Vue.js). | يجب أن يتبع نمط MVVM أو Component-Based Architecture. |
-| `server/` | تطبيق الواجهة الخلفية (Backend Application) (مثلاً: Go، Bun WebSocket Server). | يجب أن يتبع نمط Layered Architecture أو Clean Architecture. |
+| `client/` | تطبيق الواجهة الأمامية (Frontend Application) (Flutter). | يجب أن يتبع نمط MVVM أو Component-Based Architecture. |
+| `server/` | تطبيق الواجهة الخلفية (Backend Application) (Go Microservices). | يجب أن يتبع نمط Layered Architecture أو Clean Architecture. |
 | `docs/` | وثائق المشروع العامة (باستثناء وثائق Kiro الخاصة). | يجب أن تكون الوثائق محدثة وتتبع معيار Markdown. |
 | `scripts/` | نصوص الأتمتة (Automation Scripts) (مثل: النشر، الإعداد). | يجب أن تكون النصوص قابلة للتنفيذ وموثقة. |
-| `iac/` | البنية التحتية ككود (Infrastructure as Code) (مثل: Terraform، CloudFormation). | يجب أن تكون منفصلة لكل خدمة (Client/Server). |
+| `iac/` | البنية التحتية ككود (Infrastructure as Code) (Terraform). | يجب أن تكون منفصلة لكل خدمة (Client/Server). |
 | `.kiro/` | ملفات توجيه Kiro (Steering, Specs, Hooks, Prompts). | **يجب عدم تعديل هذا المجلد إلا لغرض المعايرة الاستراتيجية.** |
 
 ## 2. المبادئ المعمارية الرئيسية (Key Architectural Principles)
@@ -35,3 +36,10 @@
 | **المكونات (Components)** | **PascalCase** | `UserProfileComponent` |
 | **المتغيرات والدوال** | **camelCase** | `getUserData()`، `isLoggedIn` |
 | **رسائل الالتزام (Commits)** | **Conventional Commits** | `feat: add user authentication`، `fix: resolve login bug` |
+
+## 4. متطلبات الهيكلة الإلزامية (Mandatory Structural Requirements)
+
+*   **IaC لكل خدمة:** يجب أن يكون لكل خدمة (Microservice) ملفات IaC خاصة بها في مجلد `iac/` لضمان الاستقلالية.
+*   **فصل الاختبارات:** يجب أن تكون ملفات الاختبارات مفصولة عن كود المصدر (مثل `client/test/` و `server/service-auth/test/`).
+*   **التوثيق المولد:** يجب أن يتم توليد التوثيق (مثل وثائق API) تلقائيًا وتخزينه في مجلد `docs/`.
+'''

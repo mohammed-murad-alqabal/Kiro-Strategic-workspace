@@ -1,37 +1,31 @@
-# متطلبات المشروع (Project Requirements)
+# مواصفات متطلبات القالب الاستراتيجي (Strategic Blueprint Requirements)
 
-هذا الملف يحدد المتطلبات الوظيفية وغير الوظيفية للمشروع، ويجب أن يتم صياغتها بدقة عالية باستخدام صيغة EARS (Easy Approach to Requirements Syntax) لضمان قابلية التنفيذ من قبل وكلاء الذكاء الاصطناعي.
+هذا الملف يحدد المتطلبات الوظيفية وغير الوظيفية للقالب نفسه، ويجب أن يتم صياغتها بدقة عالية باستخدام صيغة EARS (Easy Approach to Requirements Syntax) لضمان قابلية التنفيذ من قبل وكلاء الذكاء الاصطناعي.
 
 ## 1. المتطلبات الوظيفية (Functional Requirements)
 
-### 1.1. توليد المواصفات (Spec Generation)
-**المتطلب (EARS Format):**
-> **If** the user requests a new feature specification, **then** the Kiro Agent **shall** generate a draft `specs/` document (requirements, design, tasks) based on the approved `templates/spec_template.md`.
+### FR-1: توجيه الوكيل بالمواصفات
+> **When** a Kiro Agent is tasked with a feature, **the system shall** ensure the task is linked to a valid, approved Spec file in `specs/`.
 
-### 1.2. فرض المكدس التقني
-**المتطلب (EARS Format):**
-> **Whenever** the Kiro Agent generates or modifies code, **the system shall** ensure strict adherence to the technology stack defined in `.kiro/steering/tech.md`.
+### FR-2: فرض المكدس التقني
+> **When** a Kiro Agent generates code, **the system shall** ensure the generated code adheres strictly to the technologies defined in `steering/tech-stack.md`.
 
-### 1.3. فحص الأمان الوقائي
-**المتطلب (EARS Format):**
-> **When** a developer attempts a `git commit`, **the system shall** execute the `hooks/on-commit/10_security_scan.sh` script **and** **if** sensitive data is detected, **then** the commit **shall** be aborted.
+### FR-3: فحص الأمان الوقائي
+> **When** a developer attempts to commit changes, **the system shall** execute the `on-commit` hook to scan for secrets and security vulnerabilities.
 
-### 1.4. الاتصال بمصادر المعرفة
-**المتطلب (EARS Format):**
-> **While** the Kiro Agent is processing a task, **the system shall** prioritize context from the configured MCP servers in `.kiro/settings/mcp.json` **to** ensure the use of the latest organizational knowledge.
+### FR-4: تحديث التوثيق التلقائي
+> **When** a file is saved in the project, **the system shall** execute the `on-save` hook to check if the `README.md` or `PLAN.md` needs to be updated based on the change.
 
 ## 2. المتطلبات غير الوظيفية (Non-Functional Requirements)
 
-### 2.1. الأداء (Performance)
-*   **الاستجابة:** يجب أن يكون زمن استجابة واجهة برمجة التطبيقات (API) أقل من 100 مللي ثانية لـ 95% من الطلبات.
+### NFR-1: الأداء (Performance)
+> **The system shall** ensure that the `on-commit` hook completes its execution in less than 5 seconds to maintain developer flow.
 
-### 2.2. الأمان (Security)
-*   **التشفير:** يجب تشفير جميع الاتصالات بين العميل والخادم باستخدام TLS 1.3.
-*   **المصادقة:** يجب استخدام المصادقة الثنائية (2FA) لجميع حسابات المسؤولين.
+### NFR-2: الأمان (Security)
+> **The system shall** enforce the use of environment variables for all sensitive credentials, as defined in `steering/security.md`.
 
-### 2.3. قابلية الصيانة (Maintainability)
-*   **التوثيق:** يجب أن تكون جميع الدوال والوحدات النمطية موثقة بالكامل باستخدام معيار JSDoc/GoDoc.
-*   **التغطية بالاختبارات:** يجب أن لا تقل تغطية الكود بالاختبارات (Test Coverage) عن 85%.
+### NFR-3: قابلية الصيانة (Maintainability)
+> **The system shall** ensure that all generated code has a test coverage of at least 85%, as enforced by the `on-push` hook.
 
 ## 3. مقاييس النجاح (Success Metrics)
 
@@ -44,3 +38,4 @@
 ### ب. مقاييس SPACE (لإنتاجية المطور)
 *   **Satisfaction and Well-being:** يجب أن يساهم القالب في تقليل الإحباط الناتج عن الأخطاء المتكررة (مثل أخطاء الأمان) من خلال الأتمتة الوقائية.
 *   **Activity:** يجب أن يزيد القالب من جودة مخرجات المطور (مثل جودة التوثيق والمواصفات) من خلال فرض القوالب الموحدة.
+'''
