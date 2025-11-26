@@ -22,7 +22,10 @@ To thoroughly analyze the specified Pull Request, identifying technical risks an
 
 **CRITICAL GUIDELINES:**
 
-1.  **Governance Check First:** Before any technical review, you **MUST** check the changes against the project's steering files in `.kiro/steering/` (especially `philosophy.md`, `security.md`, `git-best-practices.md`).
+1.  **Strategic Governance Check:** Before any technical review, you **MUST** conduct a strategic assessment against the project's core philosophical and governance documents:
+    -   **Philosophy Check:** Does the change align with the core principles in `.kiro/steering/philosophy.md` (e.g., Spec-Driven Development, Quality First)?
+    -   **Security Check:** Does the change adhere to the rules in `.kiro/steering/security.md` (especially the new Resilience requirements)?
+    -   **Structural Check:** Does the change comply with the architectural patterns in `.kiro/steering/structure.md` (especially the new Resilience Patterns)?
 2.  **Charter Enforcement:** You **MUST** verify that the changes uphold the **Engineering Charter** principles (Sustainability, Transparency, Quality First). For example, if a change introduces a quick fix without proper testing, it violates "Quality First."
 3.  **Security-First:** Any security-related change **MUST** be cross-referenced with `security.md` (OWASP/AWS rules).
 4.  **Metrics Impact:** You **MUST** assess the potential impact of the changes on **DORA** and **SPACE** metrics.
@@ -37,11 +40,11 @@ To thoroughly analyze the specified Pull Request, identifying technical risks an
 
 During your analysis, pay close attention to the following augmented aspects:
 
-- [ ] **Compliance with Charter:** Does the change violate **Sustainability** (e.g., introduces technical debt)? Does it uphold **Quality First** (e.g., proper test coverage)?
+- [ ] **Compliance with Charter & Philosophy:** Does the change violate the **Sustainability** principle or the **Spec-Driven Development** principle? (e.g., Is the code a direct reflection of the approved Spec?)
 - [ ] **Security Compliance:** Does the change adhere to the specific rules in `.kiro/steering/security.md` (e.g., S-CONF-001)?
 - [ ] **Git Compliance:** Does the commit message follow the Conventional Commit format as required by `.kiro/steering/git-best-practices.md`?
 - [ ] **Metrics Impact:** Will this change negatively affect DORA metrics (e.g., increase Lead Time for Changes)?
-- [ ] **Architectural Adherence:** Do the changes align with the patterns defined in `.kiro/steering/structure.md`?
+- [ ] **Architectural Adherence & Resilience:** Do the changes align with the patterns defined in `.kiro/steering/structure.md`? **CRITICALLY:** Are all external calls protected by the required Resilience Patterns (Circuit Breakers, Retries, Timeouts)?
 - [ ] **Test Coverage:** Are the changes covered by unit or integration tests? (Mandatory for "Quality First" principle).
 
 ---
@@ -57,7 +60,7 @@ Please structure your review report in the following format, with an emphasis on
 
 #### 2. Key Findings and Suggestions (Categorized)
 
-##### [GOVERNANCE] Charter & Steering Violations (Must be fixed)
+##### [STRATEGIC GOVERNANCE] Philosophy & Charter Violations (Must be fixed)
 - **Violation:** (e.g., The change violates the **Sustainability** principle by using a deprecated library.)
 - **File:** `[Relevant File Path]`
 - **Suggestion:** (e.g., Refactor to use the approved library as per `tech-stack.md`.)
