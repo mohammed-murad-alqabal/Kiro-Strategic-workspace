@@ -24,6 +24,13 @@
       "description": "Best practices and boilerplate for Kiro implementation on AWS (User-provided reference)."
     },
     {
+      "id": "owasp_asvs",
+      "type": "web",
+      "uri": "https://mock-mcp.kiro.dev/owasp/asvs",
+      "priority": 88,
+      "description": "OWASP Application Security Verification Standard (ASVS) for security best practices (Global Reference)."
+    },
+    {
       "id": "kiro_workflow_prompts",
       "type": "web",
       "uri": "https://github.com/wirelessr/kiro-workflow-prompts",
