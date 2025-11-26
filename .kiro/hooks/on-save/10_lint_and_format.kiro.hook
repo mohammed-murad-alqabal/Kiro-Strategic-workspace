@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Lint and Format on Save (Go/Flutter)",
+  "description": "Automatically lint and format Go and Flutter code when files are saved following project standards (Go fmt, Dart format).",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.go",
+      "**/*.dart"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A code file has been saved. Please:\n1. Run the appropriate formatter (Go fmt for Go, Dart format for Flutter/Dart).\n2. Run the appropriate linter (Go vet/golangci-lint for Go, Dart analyzer for Flutter/Dart).\n3. Fix any auto-fixable issues.\n4. Report any remaining issues that need manual attention.\n\nUse the project's existing configuration files (go.mod, analysis_options.yaml, etc.) and follow the established coding standards."
+  }
+}

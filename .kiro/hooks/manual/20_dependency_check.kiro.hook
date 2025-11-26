@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Dependency Update Check (Go/Flutter/Terraform)",
+  "description": "Check for outdated dependencies and suggest updates following dependency management best practices for Go, Flutter, and Terraform.",
+  "version": "1",
+  "when": {
+    "type": "manual",
+    "button_text": "Check Dependencies"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check for outdated dependencies and suggest updates following dependency management best practices. Please:\n1. Run dependency check commands for Go (go list -m -u all), Flutter (flutter pub outdated), and Terraform (terraform providers lock -h).\n2. Identify packages/modules that have newer versions available.\n3. Categorize updates by severity (major, minor, patch).\n4. Check for security vulnerabilities in current versions (using Go's built-in tools or similar).\n5. Suggest which updates are safe to apply immediately.\n6. Warn about potentially breaking changes in major updates.\n7. Provide commands to update specific packages/modules.\n8. Ensure all updates comply with the **Sustainability** principle of the Engineering Charter."
+  }
+}
