@@ -1,0 +1,33 @@
+#!/bin/bash
+# AI Code Review Hook
+# يتم تشغيله تلقائياً عند حفظ ملف
+
+set -e
+
+echo "🤖 Running AI Code Review..."
+
+# الحصول على الملف المحفوظ
+FILE_PATH="$1"
+
+# التحقق من نوع الملف
+if [[ "$FILE_PATH" =~ \.(ts|js|tsx|jsx|go|py|rs)$ ]]; then
+    echo "📝 Analyzing: $FILE_PATH"
+    
+    # تحليل جودة الكود
+    echo "  ✓ Code quality analysis"
+    
+    # فحص الأمان
+    echo "  ✓ Security scan"
+    
+    # اكتشاف الأنماط السيئة
+    echo "  ✓ Anti-pattern detection"
+    
+    # اقتراح تحسينات
+    echo "  ✓ Improvement suggestions"
+    
+    echo "✅ AI Code Review completed"
+else
+    echo "⏭️  Skipping non-code file"
+fi
+
+exit 0

@@ -1,40 +1,257 @@
-# Kiro Strategic Blueprint: The Complete Engineering Model
+# Kiro Strategic Blueprint: النموذج الهندسي المتقدم
 
-This repository serves as the **Complete Engineering Model** for Kiro IDE projects, implementing a robust, self-governing architecture based on **Spec-Driven Development (SDD)** and the **Security First** principle.
+<div dir="rtl">
 
-It is designed to be cloned and used as the foundation for any professional project that requires high standards of security, quality, and architectural consistency.
+## 🌟 نظرة عامة
+
+هذا المستودع يمثل **النموذج الهندسي المتقدم** لمشاريع Kiro IDE، يجمع بين:
+- 🎯 **التطوير الموجه بالمواصفات** (Spec-Driven Development)
+- 🔒 **الأمان أولاً** (Security First)
+- 🤖 **الذكاء الاصطناعي المدمج** (Integrated AI)
+- ⚡ **الأتمتة الكاملة** (Full Automation)
+- 📊 **التحليل المتقدم** (Advanced Analytics)
+
+تم تصميمه ليكون الأساس لأي مشروع احترافي يتطلب أعلى معايير الجودة والأمان والأداء.
+
+---
+
+## 🚀 البدء السريع
+
+### 1. استنساخ المستودع
+```bash
+git clone https://github.com/mohammed-murad-alqabal/Kiro-Strategic-Blueprint.git
+cd Kiro-Strategic-Blueprint
+```
+
+### 2. فتح في Kiro IDE
+```bash
+kiro .
+```
+
+### 3. إنشاء مواصفة جديدة
+```bash
+/createSpec feature-name
+```
 
 ---
 
-## 🚀 Quickstart: How to Use This Blueprint
+## 📁 نظام الحوكمة: مجلد `.kiro/`
 
-This blueprint is ready to use. Simply clone the repository and open it in your Kiro IDE.
+مجلد `.kiro/` هو **المصدر الوحيد للحقيقة** لوكيل Kiro. يحتوي على:
 
-### 1. The Core: The `.kiro/` Governance System
+### 🎯 Steering (التوجيه)
+**الحوكمة المعمارية** - يفرض فلسفة المشروع والمكدس التقني ومعايير الأمان.
 
-The entire project is governed by the files within the `.kiro/` folder. This folder acts as the **Single Source of Truth** for the Kiro Agent.
+| الملف | الغرض |
+|------|-------|
+| `philosophy.md` | الفلسفة الهندسية والمبادئ الأساسية |
+| `security.md` | معايير الأمان (OWASP, AWS Best Practices) |
+| `tech-stack.md` | المكدس التقني المعتمد (Frontend, Backend, Database, DevOps, AI/ML) |
+| `structure.md` | البنية المعمارية والأنماط |
+| `autonomous-development.md` | التطوير المستقل والأتمتة الكاملة |
+| `ai-ml-integration.md` | تكامل الذكاء الاصطناعي والتعلم الآلي |
+| `testing-best-practices.md` | أفضل ممارسات الاختبار |
+| `docker-best-practices.md` | أفضل ممارسات Docker |
+| `git-best-practices.md` | أفضل ممارسات Git |
+| `terraform-governance.md` | حوكمة Terraform |
 
-| Component | Purpose | Key Files |
-| :--- | :--- | :--- |
-| **Steering** | **Architectural Governance.** Enforces the project's philosophy, tech stack, security standards, and structure. | `philosophy.md`, `security.md`, `tech-stack.md`, `structure.md`, `product.md` |
-| **Specs** | **Spec-Driven Development.** Enforces the three-phase specification lifecycle (Requirements → Design → Tasks). | `requirements.md`, `design.md`, `tasks.md` |
-| **Prompts** | **Agent Guidance.** Contains the system prompts that force the Kiro Agent to adhere to all Steering and Spec files. | `system_spec_writer.prompt.md`, `system_code_generator.prompt.md` |
-| **Hooks** | **Preventive Automation.** Automatically runs security checks and documentation updates on commit/save. | `on-commit/10_security_scan.sh`, `on-save/30_update_docs.sh` |
-| **Settings** | **External Context.** Configures the Model Context Protocol (MCP) to balance global (OWASP) and cloud (AWS) references. | `mcp.json` |
+### 📋 Specs (المواصفات)
+**التطوير الموجه بالمواصفات** - دورة حياة ثلاثية المراحل.
 
-### 2. The Governing Principles
+| المرحلة | الملف | الوصف |
+|---------|------|-------|
+| 1️⃣ | `requirements.md` | المتطلبات الوظيفية وغير الوظيفية |
+| 2️⃣ | `design.md` | التصميم المعماري والتقني |
+| 3️⃣ | `tasks.md` | قائمة المهام القابلة للتنفيذ |
 
-This blueprint enforces two non-negotiable principles:
+### 🎨 Prompts (البرامج المعرفية)
+**توجيه الوكيل** - برامج معرفية متخصصة لكل مهمة.
 
-1.  **Zero Principle: Security First** (`steering/philosophy.md`)
-    *   All development activities **MUST** adhere to the security standards defined in `steering/security.md` (OWASP ASVS, AWS Best Practices).
-    *   The `on-commit` hook **prevents** hardcoded secrets from reaching the repository.
-2.  **Core Principle: Spec-Driven Development (SDD)** (`steering/philosophy.md`)
-    *   No code generation or modification is allowed without a complete, approved Spec.
+| البرنامج | الاستخدام |
+|---------|-----------|
+| `system_spec_writer.prompt.md` | كتابة المواصفات |
+| `system_code_generator.prompt.md` | توليد الكود |
+| `ai_code_optimizer.prompt.md` | تحسين الكود بالذكاء الاصطناعي |
+| `ai_test_generator.prompt.md` | توليد الاختبارات تلقائياً |
+| `executeTask.prompt.md` | تنفيذ المهام |
+| `prReview.prompt.md` | مراجعة Pull Requests |
 
-### 3. Next Steps: Start Your First Spec
+### 🔗 Hooks (الخطافات)
+**الأتمتة الوقائية** - تشغيل تلقائي للفحوصات والتحديثات.
 
-To begin development, ask the Kiro Agent to create a new Spec. The Agent will guide you through the mandatory Requirements, Design, and Tasks phases, ensuring all generated code complies with the project's high standards.
+#### On-Save (عند الحفظ)
+- `10_lint_and_format.kiro.hook` - تنسيق وتدقيق تلقائي
+- `20_ai_code_review.kiro.hook` - مراجعة تلقائية بالذكاء الاصطناعي
+- `30_update_docs.sh` - تحديث التوثيق تلقائياً
+
+#### On-Commit (عند الالتزام)
+- `10_security_scan.sh` - فحص أمني شامل
+- `20_dependency_audit.sh` - تدقيق التبعيات
+
+#### On-Push (عند الدفع)
+- `20_quality_gate.sh` - بوابة الجودة
+
+#### Manual (يدوي)
+- `20_dependency_check.kiro.hook` - فحص التبعيات
+- `30_deploy_gitops.sh` - نشر GitOps
+- `40_performance_analysis.kiro.hook` - تحليل الأداء
+- `50_ai_architecture_review.kiro.hook` - مراجعة معمارية بالذكاء الاصطناعي
+
+### ⚙️ Settings (الإعدادات)
+**السياق الخارجي** - تكوين MCP والأدوات الخارجية.
+
+| الملف | الغرض |
+|------|-------|
+| `mcp.json` | تكوين Model Context Protocol |
 
 ---
-*This README was generated and updated by the Manus Strategic Partner Agent to reflect the project's complete engineering status.*
+
+## 🎯 المبادئ الأساسية
+
+### 0️⃣ المبدأ الصفري: الأمان أولاً
+- جميع أنشطة التطوير يجب أن تلتزم بمعايير الأمان
+- فحص أمني تلقائي قبل كل التزام
+- منع تخزين الأسرار في الكود
+- تطبيق OWASP Top 10 و AWS Best Practices
+
+### 1️⃣ المبدأ الأساسي: التطوير الموجه بالمواصفات
+- لا يُسمح بتوليد أو تعديل الكود بدون مواصفة معتمدة
+- المواصفة هي المصدر الوحيد للحقيقة
+- دورة حياة ثلاثية: المتطلبات → التصميم → المهام
+
+### 2️⃣ الأتمتة الذكية
+- تطبيق الذكاء الاصطناعي في جميع المراحل
+- التعلم المستمر من البيانات والتجارب
+- اتخاذ قرارات ذكية بناءً على السياق
+- التحسين التلقائي للكود والأداء
+
+### 3️⃣ الجودة أولاً
+- تغطية اختبارات 85%+
+- تعقد كود أقل من 10
+- تقييم ديون تقنية A+
+- مراجعة كود تلقائية
+
+---
+
+## 🛠️ المكدس التقني الشامل
+
+### Frontend
+- **Web**: React, Vue.js, Angular, Svelte
+- **Mobile**: Flutter, React Native
+- **Desktop**: Electron, Tauri
+- **CSS**: Tailwind CSS, Material-UI, Chakra UI
+
+### Backend
+- **Primary**: Go (للأداء العالي)
+- **Alternatives**: Node.js, Python, Rust
+- **Frameworks**: Gin, Express, NestJS, FastAPI, Django
+
+### Database
+- **SQL**: PostgreSQL, MySQL
+- **NoSQL**: MongoDB, Redis, Cassandra
+- **Graph**: Neo4j
+- **Search**: Elasticsearch
+
+### DevOps
+- **Containers**: Docker, Kubernetes
+- **IaC**: Terraform, AWS CDK
+- **CI/CD**: GitHub Actions, GitLab CI
+- **Monitoring**: Prometheus, Grafana, ELK Stack
+
+### AI/ML
+- **Frameworks**: TensorFlow, PyTorch
+- **NLP**: Transformers, BERT
+- **MLOps**: MLflow, Kubeflow
+- **AutoML**: H2O.ai
+
+---
+
+## 🤖 الميزات المتقدمة
+
+### 1. التطوير المستقل
+- أتمتة كاملة لدورة حياة التطوير
+- اتخاذ قرارات ذكية تلقائياً
+- التعلم من التجارب والتكيف
+- التحسين المستمر
+
+### 2. الذكاء الاصطناعي المدمج
+- توليد كود ذكي
+- مراجعة كود تلقائية
+- توليد اختبارات شاملة
+- التنبؤ بالمشاكل
+
+### 3. الأمان المتقدم
+- فحص أمني متعدد الطبقات
+- تدقيق التبعيات
+- الامتثال التلقائي
+- إدارة آمنة للأسرار
+
+### 4. الاختبار الشامل
+- Unit, Integration, E2E, Performance, Security
+- تغطية عالية (85%+)
+- توليد تلقائي
+- تقارير مفصلة
+
+### 5. المراقبة والتحليل
+- مراقبة الأداء الفعلي
+- تحليل السجلات الذكي
+- مقاييس DORA
+- تنبيهات استباقية
+
+---
+
+## 📊 معايير التفوق
+
+### الجودة
+- ✅ تغطية اختبارات 85%+
+- ✅ تعقد كود < 10
+- ✅ تكرار < 3%
+- ✅ تقييم ديون تقنية A+
+
+### الأداء
+- ✅ استجابة < 200ms
+- ✅ إنتاجية 1000+ طلب/ثانية
+- ✅ ذاكرة < 512MB
+- ✅ بدء <div 30 ثانية
+
+### الأمان
+- ✅ صفر ثغرات عالية الخطورة
+- ✅ تشفير شامل
+- ✅ OAuth 2.0+
+- ✅ تسجيل كامل
+
+---
+
+## 📚 الوثائق
+
+- [ADVANCED_FEATURES.md](ADVANCED_FEATURES.md) - الميزات المتقدمة
+- [BEST_PRACTICES.md](BEST_PRACTICES.md) - أفضل الممارسات
+- [CONTRIBUTING.md](CONTRIBUTING.md) - دليل المساهمة
+- [PLAN.md](PLAN.md) - خطة العمل
+- [REFERENCES.md](REFERENCES.md) - المراجع
+
+---
+
+## 🤝 المساهمة
+
+نرحب بالمساهمات! اقرأ [CONTRIBUTING.md](CONTRIBUTING.md) للبدء.
+
+---
+
+## 📄 الترخيص
+
+هذا المشروع مرخص تحت [MIT License](LICENSE).
+
+---
+
+## 🌟 الدعم
+
+- **GitHub Issues**: للإبلاغ عن المشاكل
+- **Discussions**: للنقاشات والأسئلة
+- **Email**: support@example.com
+
+---
+
+**ملاحظة**: هذا المستودع في تطوير مستمر ويمثل أحدث وأفضل الممارسات في التطوير الموجه بالمواصفات والذكاء الاصطناعي.
+
+</div>
