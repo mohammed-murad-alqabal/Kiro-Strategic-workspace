@@ -1,6 +1,6 @@
 # أفضل الممارسات لمستودع Kiro-Strategic-Blueprint
 
-**المؤلف:** Manus AI
+**المؤلف:** Kiro Strategic Blueprint Team
 **التاريخ:** 25 نوفمبر 2025
 **الموضوع:** دليل شامل لأفضل الممارسات في استخدام قالب Kiro-Strategic-Blueprint
 

@@ -2,7 +2,7 @@
 # Hook: 20_quality_gate.sh
 # Type: on-push
 # Description: Enforces a quality gate before pushing to the remote repository.
-# Compliance: Enforces NFR-003 (Test Coverage) from specs/requirements.md.
+# Compliance: Enforces NFR-003 (Test Coverage) from specs/requirements.md. (Required Coverage: 85%)
 
 # --- Configuration ---
 REQUIRED_COVERAGE=85
@@ -10,8 +10,8 @@ REQUIRED_COVERAGE=85
 # --- Execution ---
 echo "--- Running Kiro Quality Gate (20_quality_gate.sh) ---"
 
-# Mock check for test coverage. In a real environment, this would parse a coverage report.
-# We simulate a failure if the coverage is below the required threshold.
+# Mock check for test coverage. In a real environment, this would parse a coverage report (e.g., from 'go test -coverprofile' or 'pytest --cov').
+# We simulate a failure if the coverage is below the required threshold. The failure condition is based on a simple check for demonstration purposes.
 # For demonstration, we assume a mock coverage of 80% (failure) or 90% (success) based on a simple condition.
 
 # Check if the last commit message contains 'fix: coverage' to simulate a successful run

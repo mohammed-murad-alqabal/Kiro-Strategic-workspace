@@ -9,15 +9,15 @@
 | المبدأ | الوصف | التوجيه للوكيل |
 | :--- | :--- | :--- |
 | **التبني قبل البناء (Adopt Before Build)** | يجب البحث عن حلول جاهزة، مكتبات، أو خدمات سحابية (AWS, GCP, Azure) قبل البدء في كتابة كود جديد. | **قبل البدء في أي تنفيذ، قم بإجراء بحث سريع عن حلول جاهزة (Existing Solutions) تتوافق مع `tech.md` و `structure.md`.** |
-| **القياس أولاً (Measure First)** | يجب أن تكون المقاييس (Metrics) جزءًا لا يتجزأ من عملية التطوير. | **تأكد من أن كل ميزة جديدة تتضمن خطة لقياس أدائها وتأثيرها على مقاييس DORA و SPACE المحددة في `specs/metrics.md`.** |
+| **القياس أولاً (Measure First)** | يجب أن تكون المقاييس (Metrics) جزءًا لا يتجزأ من عملية التطوير. | **تأكد من أن كل ميزة جديدة تتضمن خطة لقياس أدائها وتأثيرها على مقاييس DORA و SPACE المحددة في `specs/requirements.md` (قسم مقاييس النجاح).** |
 | **الوضوح عبر EARS** | يجب صياغة جميع المتطلبات (Requirements) ومعايير القبول (Acceptance Criteria) باستخدام صيغة EARS (Easy Approach to Requirements Syntax) لضمان الدقة وقابلية التنفيذ. | **عند إنشاء أو تعديل ملفات `specs/requirements.md`، التزم بصيغة EARS لتقليل الغموض.** |
 
 ## 2. مقاييس الأداء والجودة (Performance and Quality Metrics)
 
 يجب على الوكيل أن يسعى لتحقيق الأهداف المحددة في مقاييس DORA و SPACE:
 
-*   **DORA Metrics (DevOps Performance):** التركيز على تقليل زمن دورة التغيير (Lead Time for Changes) وتقليل معدل فشل التغيير (Change Failure Rate).
-*   **SPACE Framework (Developer Productivity):** التركيز على الكفاءة والتدفق (Flow and Efficiency) ورضا المطورين (Satisfaction and Well-being).
+*   **DORA Metrics (DevOps Performance):** التركيز على **Lead Time for Changes** (زمن دورة التغيير) و **Change Failure Rate** (معدل فشل التغيير). يجب أن يساهم الوكيل في تحسين هذه المقاييس.
+*   **SPACE Framework (Developer Productivity):** التركيز على **Flow and Efficiency** (التدفق والكفاءة) و **Satisfaction and Well-being** (الرضا والرفاهية). يجب أن يساهم الوكيل في تقليل الاحتكاك وزيادة الإنتاجية.
 
 ## 3. المكدس التقني والهيكلة (Tech Stack and Structure)
 

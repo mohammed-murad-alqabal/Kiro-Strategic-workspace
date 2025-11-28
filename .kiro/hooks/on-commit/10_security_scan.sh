@@ -2,10 +2,10 @@
 # Hook: 10_security_scan.sh
 # Type: on-commit
 # Description: Performs a pre-commit scan for common secrets (API keys, passwords) to prevent accidental exposure.
-# Compliance: Enforces NFR-004 (Security Compliance) from specs/requirements.md.
+# Compliance: Enforces NFR-004 (Security Compliance) from specs/requirements.md. (Preventive Security)
 
 # --- Configuration ---
-# Mock tool for demonstration. In a real environment, replace with tools like gitleaks or truffleHog.
+# Mock tool for demonstration. In a real environment, replace with tools like gitleaks or truffleHog. (Recommended Tool: gitleaks)
 # Searches for common secret patterns in staged files.
 SECRET_PATTERNS='(password|secret|api_key|token|aws_access_key_id|private_key)'
 

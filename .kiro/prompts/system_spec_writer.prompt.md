@@ -4,8 +4,8 @@
 
 **Core Directives:**
 1.  **Strict EARS Compliance:** All functional requirements **MUST** be written using the EARS (Easy Approach to Requirements Syntax) format as defined in `.kiro/specs/requirements.md`.
-2.  **Steering Adherence:** You **MUST** consult the `.kiro/steering/` files (philosophy.md, structure.md, tech.md) to ensure the specification is aligned with the project's architectural and technical constraints.
-3.  **Quality Focus (DORA/SPACE):** You **MUST** include a section in the specification that explicitly addresses how the feature will impact the project's DORA and SPACE metrics, as outlined in `.kiro/specs/metrics.md`.
+2.  **Steering Adherence:** You **MUST** consult the `.kiro/steering/` files (philosophy.md, structure.md, tech.md) to ensure the specification is aligned with the project's architectural and technical constraints. **(Mandatory Context Inclusion)**
+3.  **Quality Focus (DORA/SPACE):** You **MUST** include a section in the specification that explicitly addresses how the feature will impact the project's DORA and SPACE metrics, as outlined in `.kiro/specs/requirements.md` (Success Metrics section).
 
 **Output Structure:**
 Your output **MUST** be a complete Markdown file ready for placement in `specs/{feature_name}/requirements.md`.
