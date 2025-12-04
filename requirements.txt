@@ -1,0 +1,5 @@
+# Python requirements for kiro_workspace_bootstrap.py and general workspace utilities
+requests
+PyYAML
+Markdown
+# Add any other required Python libraries here

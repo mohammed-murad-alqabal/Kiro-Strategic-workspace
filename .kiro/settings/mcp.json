@@ -32,7 +32,9 @@
       "block_on": [
         {"rule": "container_scan_failed", "stage": "pre-deploy"},
         {"rule": "artifact_not_signed", "stage": "pre-deploy"},
-        {"rule": "iac_scan_high_risk", "stage": "pre-merge"}
+        {"rule": "iac_scan_high_risk", "stage": "pre-merge"},
+        {"rule": "license_non_compliant", "stage": "pre-merge"},
+        {"rule": "doc_not_updated", "stage": "pre-merge"}
       ],
       "warn_on": [
         {"rule": "code_quality_threshold", "threshold": "low"}
@@ -55,7 +57,10 @@
       "code-analysis": { "allowed_agents": ["project-bootstrapper","ci-helper","docs-updater"], "max_calls_per_hour": 200 },
       "snyk-vuln-scan": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 50 },
       "container-scan": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 100 },
-      "artifact-sign": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 50 }
+      "artifact-sign": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 50 },
+      "observability-probe": { "allowed_agents": ["ci-helper", "health-check-agent"], "max_calls_per_hour": 500 }
+      "doc-generator": { "allowed_agents": ["ci-helper", "docs-updater"], "max_calls_per_hour": 200 },
+      "license-scanner": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 100 }
     }
   },
   "mcpServers": {
@@ -122,6 +127,25 @@
       "on_error": "fail",
       "notes": "Use cosign/sigstore for artifact provenance. Enforcement blocks deploy if verification fails."
     },
+    "doc-generator": {
+      "display_name": "Automated Documentation Generator",
+      "type": "cli",
+      "command": "mkdocs build",
+      "capabilities": ["generate_docs", "check_docs_diff"]
+    },
+    "license-scanner": {
+      "display_name": "License Compliance Scanner",
+      "type": "cli",
+      "command": "license-checker",
+      "capabilities": ["scan_dependencies"]
+    },
+    "observability-probe": {
+      "display_name": "Observability Probe (Prometheus/Grafana)",
+      "type": "http",
+      "endpoint": "http://prometheus.example.internal:9090/api/v1/query",
+      "capabilities": ["query_dora_metrics", "check_health_status"],
+      "notes": "Used by agents to query DORA metrics (e.g., Change Failure Rate) before making decisions."
+    },
     "iac-scan": {
       "display_name": "IaC Scanner (Checkov / tfsec)",
       "type": "cli",
@@ -150,6 +174,8 @@
     }
   },
   "notes": {
+    "license_non_compliant": "Dependency license is not compliant with policy (e.g., GPLv3).",
+    "doc_not_updated": "Documentation was not updated after a significant code change.",
     "1": "Replace all SECRET_REF and ENV_VAR placeholders with real secret paths or CI environment variables before using in production.",
     "2": "Enforcement rules in 'policies.enforcement' must be mirrored by CI pipeline steps that call the corresponding MCP servers and interpret outputs into gating decisions (block/warn).",
     "3": "Audit logs are written locally to .kiro/mcp-audit.log; consider forwarding to SIEM for retention and correlation.",
