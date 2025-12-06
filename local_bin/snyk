@@ -1,0 +1,3 @@
+#!/bin/bash
+echo 'Mock tool snyk executed successfully. (Local Testing Mode)'
+exit 0

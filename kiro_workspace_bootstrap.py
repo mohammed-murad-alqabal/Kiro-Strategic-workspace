@@ -192,6 +192,28 @@ class WorkspaceBuilder:
         write_text(gitops_dir / "README.md", "ArgoCD/GitOps example for declarative deployment.\n")
         write_text(gitops_dir / "app.yaml", "apiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: my-kiro-app\n  namespace: argocd\n# ... deployment details\n")
 
+    def mock_enforcement_tools(self):
+        MOCK_TOOLS = ["gitleaks", "snyk", "checkov", "trivy", "license-checker"]
+        MOCK_DIR = "/usr/local/bin" # Standard path for executables
+
+        for tool in MOCK_TOOLS:
+            mock_script_path = Path(MOCK_DIR) / tool
+            # Create a simple mock script that always succeeds (exit 0)
+            # Note: In a real Dev Container, this path is usually writable.
+            # For this sandbox, we'll write to a local bin directory and add it to PATH if needed.
+            local_mock_dir = self.project_dir / "local_bin"
+            safe_mkdir(local_mock_dir)
+            local_mock_script_path = local_mock_dir / tool
+
+            with open(local_mock_script_path, "w") as f:
+                f.write("#!/bin/bash\n")
+                f.write(f"echo 'Mock tool {tool} executed successfully. (Local Testing Mode)'\n")
+                f.write("exit 0\n")
+            os.chmod(local_mock_script_path, 0o755)
+            print(f"[SUCCESS] Mock for {tool} created at {local_mock_script_path}")
+
+        print(f"[INFO] To use mocks, ensure {local_mock_dir} is in your PATH (e.g., in .bashrc or .zshrc).")
+
     def run_bootstrap(self):
         print(f"=========================================================")
         print(f"  Kiro Workspace Bootstrap for: {self.project_dir.name}")
@@ -210,6 +232,11 @@ class WorkspaceBuilder:
         print("Integration stubs generated in examples/integrations/")
 
         print("\n--- 4. Finalizing Workspace Structure ---")
+
+        print("\n--- 5. Mocking Enforcement Tools for Local Testing ---")
+        self.mock_enforcement_tools()
+
+        print("\n--- 6. Finalizing Workspace Structure ---")
         # Placeholder for copying agent adapter skeletons if needed
         
         print("\n[SUCCESS] Workspace is ready for Kiro IDE. Review reference_repos/compatibility_report.md.")

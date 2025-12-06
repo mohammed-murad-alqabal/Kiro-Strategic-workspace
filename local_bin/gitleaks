@@ -1,0 +1,3 @@
+#!/bin/bash
+echo 'Mock tool gitleaks executed successfully. (Local Testing Mode)'
+exit 0

@@ -4,18 +4,24 @@ This repository serves as a **Strategic Blueprint** for a Kiro IDE Workspace, me
 
 ## 🚀 Quick Start: Turning Blueprint into Workspace
 
-1.  **Clone the Repository:**
+### **الخطوات التالية المقترحة لك:**
+
+1.  **استنساخ المستودع:**
     ```bash
-    git clone https://github.com/mohammed-murad-alqabal/Kiro-Strategic-Blueprint.git
+    git clone [YOUR_REPO_URL]
     cd Kiro-Strategic-Blueprint
     ```
-2.  **Run the Bootstrap Script:**
-    This script prepares the workspace by cloning reference repositories and generating integration stubs.
+2.  **تشغيل سكريبت التهيئة (Bootstrap):**
     ```bash
     python3 kiro_workspace_bootstrap.py
     ```
-3.  **Open in Kiro IDE:**
-    Open the root directory in Kiro IDE. The `.kiro/` configuration will be automatically loaded.
+    > **ملاحظة:** هذا السكريبت يقوم بـ: استنساخ المراجع، توليد أمثلة التكامل، و **محاكاة أدوات الإنفاذ** (مثل Snyk, Trivy) في مجلد `local_bin/` لاختبار الـ Hooks محليًا.
+3.  **تفعيل بيئة التشغيل الموحدة (Dev Container):**
+    *   افتح المجلد في VS Code.
+    *   سيقترح VS Code إعادة الفتح في حاوية تطوير (Dev Container). وافق على ذلك.
+    *   **أو:** قم بتشغيل `docker compose up` في المجلد.
+
+**البيئة جاهزة الآن للعمل كـ "نظام تشغيل هندسي" (Engineering Operating System).**
 
 ## ✨ Key Features and Calibration Highlights
 
