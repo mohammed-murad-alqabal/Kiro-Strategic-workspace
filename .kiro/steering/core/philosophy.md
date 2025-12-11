@@ -16,7 +16,7 @@ Before any code changes, file modifications, or command execution:
 
 - Explain what you plan to do and why
 - Present your approach for review
-- Wait for explicit confirmation like "proceed" or "start"
+- Wait for explicit "proceed" or "start" confirmation
 - Get consensus before continuing
 
 **Only Exception:** Analysis, file reading, and explanations are allowed without permission.
@@ -56,9 +56,9 @@ Before any code changes, file modifications, or command execution:
 
 All code, comments, documentation, variable names, function names must be in English unless the existing document is in another language. This ensures maintainability and international collaboration.
 
-### 7. **Unified Team Identity**
+### 7. **Unified Identity**
 
-- Use consistent team naming throughout project
+- "[Your Development Team Name]"
 - Reference: `.kiro/steering/core/team-identity.md`
 
 ### 8. **Engineering Excellence through Metrics**
@@ -83,7 +83,7 @@ All code, comments, documentation, variable names, function names must be in Eng
 
 ### Philosophy
 
-- ✅ Practical solutions over theoretical idealism
+- ✅ Practical solutions over ideal theory
 - ✅ Obviously correct code over clever tricks
 - ✅ Maintainability over short-term convenience
 - ✅ Question every dependency and complexity
@@ -99,7 +99,7 @@ All code, comments, documentation, variable names, function names must be in Eng
 
 ---
 
-## Core Rules
+## Basic Rules
 
 ### Development
 

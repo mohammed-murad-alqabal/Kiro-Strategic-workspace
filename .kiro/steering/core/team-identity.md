@@ -22,26 +22,17 @@ When creating any document, report, or written content, always use:
 | Author     | `**Author:** [Your Development Team Name]`     |
 | Developer  | `**Developer:** [Your Development Team Name]`  |
 | Analyst    | `**Analyst:** [Your Development Team Name]`    |
-| Created By | `**Created By:** [Your Development Team Name]` |
+| Created by | `**Created by:** [Your Development Team Name]` |
 
 ---
 
 ## Prohibited Names
 
-❌ Generic AI Agent  
-❌ AI Assistant  
-❌ Bot  
-❌ Any similar generic terms
+❌ Kiro AI Agent  
+❌ Kiro Strategic Agent  
+❌ Kiro AI Assistant  
+❌ Any similar naming
 
 ---
 
-## Guidelines
-
-- Use your actual team/organization name
-- Maintain consistency across all documentation
-- Reflect your team's identity and values
-- Build brand recognition and accountability
-
----
-
-**For details:** `.kiro/steering/standards/documentation.md`
+**For Details:** `.kiro/steering/standards/documentation.md`

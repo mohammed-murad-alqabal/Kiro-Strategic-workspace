@@ -1,8 +1,8 @@
 # DORA/SPACE Metrics Framework
 
 **Author:** [Your Development Team Name]  
-**Date:** December 11, 2025  
-**Status:** 📊 **Metrics framework for engineering excellence**
+**التاريخ:** 11 ديسمبر 2025  
+**الحالة:** 📊 **Metrics framework for engineering excellence**
 
 ---
 
@@ -113,7 +113,7 @@ echo "Recovery time: ${RECOVERY_TIME} seconds" >> .kiro/metrics/recovery-time.lo
 
 ```bash
 # Track code quality metrics
-COVERAGE=$(npm test -- --coverage --silent | grep -o '[0-9]*\.[0-9]*%' | tail -1)
+COVERAGE=$(flutter test --coverage | grep -o '[0-9]*\.[0-9]*%' | tail -1)
 echo "$(date): Coverage ${COVERAGE}" >> .kiro/metrics/code-quality.log
 ```
 
@@ -147,7 +147,7 @@ git log --since="1 week ago" --author="$USER" --oneline | wc -l > .kiro/metrics/
 **Measurement**:
 
 ```bash
-# Track code review response time (if using GitHub CLI)
+# Track code review response time
 PR_CREATED=$(gh pr list --json createdAt --jq '.[0].createdAt')
 FIRST_REVIEW=$(gh pr list --json reviews --jq '.[0].reviews[0].submittedAt')
 # Calculate response time...
@@ -168,7 +168,7 @@ FIRST_REVIEW=$(gh pr list --json reviews --jq '.[0].reviews[0].submittedAt')
 ```bash
 # Track build times
 BUILD_START=$(date +%s)
-npm run build
+flutter build apk
 BUILD_END=$(date +%s)
 BUILD_TIME=$((BUILD_END - BUILD_START))
 echo "$(date): Build time ${BUILD_TIME}s" >> .kiro/metrics/build-times.log
@@ -217,8 +217,8 @@ echo "$(date): Build time ${BUILD_TIME}s" >> .kiro/metrics/build-times.log
 # .kiro/hooks/on-commit/metrics-collection.sh
 
 # Collect code quality metrics
-COVERAGE=$(npm test -- --coverage --silent 2>/dev/null | grep -o '[0-9]*\.[0-9]*%' | tail -1 || echo "0%")
-COMPLEXITY=$(npx eslint . --format json 2>/dev/null | jq '.length' || echo "0")
+COVERAGE=$(flutter test --coverage 2>/dev/null | grep -o '[0-9]*\.[0-9]*%' | tail -1 || echo "0%")
+COMPLEXITY=$(dart analyze --format=json | jq '.diagnostics | length' 2>/dev/null || echo "0")
 
 # Log metrics
 echo "$(date),commit,coverage,$COVERAGE,complexity,$COMPLEXITY" >> .kiro/metrics/quality-metrics.csv
@@ -249,7 +249,7 @@ echo "$(date),deployment,lead_time,$LEAD_TIME,status,success" >> .kiro/metrics/d
 # Weekly Engineering Metrics Report
 
 **Week of**: [Date Range]
-**Team**: [Your Development Team Name]
+**Team**: فريق وكلاء تطوير مشروع بصير
 
 ## DORA Metrics Summary
 
@@ -326,5 +326,5 @@ echo "$(date),deployment,lead_time,$LEAD_TIME,status,success" >> .kiro/metrics/d
 ---
 
 **Created by:** [Your Development Team Name]  
-**Reference:** DORA State of DevOps Report + SPACE Framework Research  
-**Next Update:** Weekly review
+**المرجع:** DORA State of DevOps Report + SPACE Framework Research  
+**التحديث التالي:** أسبوعي

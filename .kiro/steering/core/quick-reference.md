@@ -7,14 +7,14 @@
 
 ## Naming Conventions
 
-| Element       | Format           | Example              |
-| :------------ | :--------------- | :------------------- |
-| Files/Folders | snake_case       | `user_repository.js` |
-| Classes       | PascalCase       | `UserRepository`     |
-| Functions     | camelCase        | `getAllUsers()`      |
-| Variables     | camelCase        | `userList`           |
-| Constants     | UPPER_SNAKE_CASE | `MAX_RETRIES`        |
-| Private       | \_prefix         | `_privateMethod()`   |
+| Element       | Format     | Example                  |
+| :------------ | :--------- | :----------------------- |
+| Files/Folders | snake_case | `customer_repository.js` |
+| Classes       | PascalCase | `CustomerRepository`     |
+| Functions     | camelCase  | `getAllCustomers()`      |
+| Variables     | camelCase  | `customerList`           |
+| Constants     | UPPER_CASE | `MAX_RETRIES`            |
+| Private       | \_prefix   | `_privateMethod()`       |
 
 **Details:** `.kiro/standards/naming.md`
 
@@ -41,12 +41,12 @@
 
 ---
 
-## Security
+## Security Requirements
 
 ### Mandatory Rules
 
 - ❌ No secrets in code
-- ✅ Use secure storage
+- ✅ Use secure storage solutions
 - ✅ Validate all inputs
 - ✅ Hash passwords (SHA-256+)
 - ✅ Encrypt sensitive data
@@ -55,7 +55,7 @@
 
 ---
 
-## Testing
+## Testing Standards
 
 ### Types
 
@@ -73,7 +73,7 @@
 
 ---
 
-## Documentation
+## Documentation Standards
 
 ### Mandatory
 
@@ -83,10 +83,46 @@
 
 ### Language
 
-- **English**: for technical terms and code
-- **Local Language**: for user-facing content (optional)
+- **English**: For technical terms and code
+- **Local Language**: For user-facing content (if applicable)
 
 **Details:** `.kiro/standards/documentation.md`
+
+---
+
+## Development Best Practices
+
+### Architecture
+
+- Use appropriate design patterns
+- Clean Architecture (layered approach)
+- Feature-first organization
+- Proper state management
+- Efficient data persistence
+
+**Details:** `.kiro/guides/development-guide.md`
+
+---
+
+## Git Workflow
+
+### Commit Messages
+
+```
+type(scope): description
+
+feat: add new feature
+fix: fix bug
+docs: update documentation
+```
+
+### Branching
+
+- `main`: always stable
+- `feature/*`: for new features
+- `fix/*`: for bug fixes
+
+**Details:** `.kiro/guides/git-guide.md`
 
 ---
 
@@ -125,26 +161,4 @@
 
 ---
 
-## Git Workflow
-
-### Commit Messages
-
-```
-type(scope): description
-
-feat: add new feature
-fix: resolve bug
-docs: update documentation
-```
-
-### Branching
-
-- `main`: always stable
-- `feature/*`: for new features
-- `fix/*`: for bug fixes
-
-**Details:** `.kiro/guides/git-guide.md`
-
----
-
-**For complete references:** `.kiro/reference/`
+**For Complete References:** `.kiro/reference/`

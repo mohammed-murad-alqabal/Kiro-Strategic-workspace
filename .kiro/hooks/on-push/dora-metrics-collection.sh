@@ -1,163 +1,195 @@
 #!/bin/bash
-# DORA Metrics Collection Hook
-# Author: [Your Development Team Name]
-# Date: December 11, 2025
+# Hook: dora-metrics-collection.sh
+# Type: on-push
+# Description: DORA metrics collection and quality gate before push
+# Project: [Your Project Name]
+# Compliance: Implements Quality First principle from steering/philosophy.md
 
-set -e
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "📊 Kiro DORA Metrics & Quality Gate"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
 
-echo "📊 DORA Metrics Collection Starting..."
+# Error counter
+ERRORS=0
+PUSH_TIME=$(date +%s)
+BRANCH=$(git branch --show-current)
 
-# Create metrics directory
+# Create metrics directory if it doesn't exist
 mkdir -p .kiro/metrics
 
-# Get current timestamp
-TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-UNIX_TIMESTAMP=$(date +%s)
-
-# Get git information
-COMMIT_HASH=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
-COMMIT_TIME=$(git log -1 --format=%ct 2>/dev/null || echo "$UNIX_TIMESTAMP")
-BRANCH_NAME=$(git branch --show-current 2>/dev/null || echo "unknown")
-AUTHOR=$(git log -1 --format=%an 2>/dev/null || echo "unknown")
-
-echo "📈 Collecting DORA Metrics for commit: $COMMIT_HASH"
-
-# 1. Deployment Frequency Tracking
-echo "📊 Tracking deployment frequency..."
-if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "master" ]; then
-    echo "$TIMESTAMP,$COMMIT_HASH,$BRANCH_NAME,main_branch_push,1" >> .kiro/metrics/deployment-frequency.csv
-    echo "✅ Main branch push recorded for deployment frequency"
-fi
-
-# 2. Lead Time Calculation
-echo "📊 Calculating lead time..."
-if [ -f ".kiro/metrics/feature-start-times.csv" ]; then
-    # Try to find when this feature/branch was started
-    FEATURE_START=$(grep "$BRANCH_NAME" .kiro/metrics/feature-start-times.csv 2>/dev/null | tail -1 | cut -d',' -f2 || echo "$COMMIT_TIME")
-    LEAD_TIME=$((UNIX_TIMESTAMP - FEATURE_START))
-    LEAD_TIME_HOURS=$((LEAD_TIME / 3600))
-    
-    echo "$TIMESTAMP,$COMMIT_HASH,$BRANCH_NAME,$FEATURE_START,$UNIX_TIMESTAMP,$LEAD_TIME,$LEAD_TIME_HOURS" >> .kiro/metrics/lead-time.csv
-    echo "✅ Lead time recorded: $LEAD_TIME_HOURS hours"
+# 1. Code Formatting Check
+echo "📋 1. Code formatting check..."
+if command -v dart >/dev/null 2>&1; then
+    if ! dart format --set-exit-if-changed lib/ test/ 2>/dev/null; then
+        echo "   ❌ Code is not properly formatted"
+        echo "   💡 Run: dart format lib/ test/"
+        ERRORS=$((ERRORS + 1))
+    else
+        echo "   ✅ Formatting is correct"
+    fi
+elif command -v prettier >/dev/null 2>&1; then
+    if ! prettier --check src/ 2>/dev/null; then
+        echo "   ❌ Code is not properly formatted"
+        echo "   💡 Run: prettier --write src/"
+        ERRORS=$((ERRORS + 1))
+    else
+        echo "   ✅ Formatting is correct"
+    fi
+elif command -v black >/dev/null 2>&1; then
+    if ! black --check . 2>/dev/null; then
+        echo "   ❌ Code is not properly formatted"
+        echo "   💡 Run: black ."
+        ERRORS=$((ERRORS + 1))
+    else
+        echo "   ✅ Formatting is correct"
+    fi
 else
-    # Create initial feature start time file
-    echo "timestamp,branch,start_time" > .kiro/metrics/feature-start-times.csv
-    echo "$TIMESTAMP,$BRANCH_NAME,$COMMIT_TIME" >> .kiro/metrics/feature-start-times.csv
+    echo "   ⚠️  No formatter found (dart, prettier, or black)"
 fi
 
-# 3. Change Quality Assessment (for Change Failure Rate)
-echo "📊 Assessing change quality..."
-QUALITY_SCORE=0
+# 2. Static Analysis
+echo ""
+echo "📋 2. Static analysis..."
+if command -v flutter >/dev/null 2>&1; then
+    ANALYZE_OUTPUT=$(flutter analyze 2>&1)
+    ANALYZE_EXIT=$?
+elif command -v eslint >/dev/null 2>&1; then
+    ANALYZE_OUTPUT=$(eslint src/ 2>&1)
+    ANALYZE_EXIT=$?
+elif command -v pylint >/dev/null 2>&1; then
+    ANALYZE_OUTPUT=$(pylint src/ 2>&1)
+    ANALYZE_EXIT=$?
+else
+    echo "   ⚠️  No static analyzer found"
+    ANALYZE_EXIT=0
+fi
 
-# Check test coverage if available
-if [ -f "coverage/lcov.info" ]; then
-    COVERAGE=$(grep -o 'LF:[0-9]*' coverage/lcov.info | awk -F: '{sum+=$2} END {print sum}' 2>/dev/null || echo "0")
-    if [ "$COVERAGE" -gt 70 ]; then
-        QUALITY_SCORE=$((QUALITY_SCORE + 25))
+if [ $ANALYZE_EXIT -ne 0 ]; then
+    echo "   ❌ Code analysis issues found"
+    echo ""
+    echo "$ANALYZE_OUTPUT" | grep -E "error|warning" | head -10
+    echo ""
+    echo "   💡 Fix issues before push"
+    ERRORS=$((ERRORS + 1))
+else
+    echo "   ✅ No analysis issues"
+fi
+
+# 3. Tests
+echo ""
+echo "📋 3. Running tests..."
+TEST_PASSED=false
+
+if [ -d "test" ] && command -v flutter >/dev/null 2>&1; then
+    if flutter test --no-pub 2>&1 | tee /tmp/test_output.txt; then
+        echo "   ✅ All tests passed"
+        TEST_PASSED=true
+    else
+        echo "   ❌ Some tests failed"
+        ERRORS=$((ERRORS + 1))
     fi
-fi
-
-# Check for linting/analysis results
-if command -v eslint >/dev/null 2>&1 && [ -f "package.json" ]; then
-    LINT_ISSUES=$(npx eslint . --format json 2>/dev/null | jq 'map(.errorCount) | add' 2>/dev/null || echo "0")
-    if [ "$LINT_ISSUES" -eq 0 ]; then
-        QUALITY_SCORE=$((QUALITY_SCORE + 25))
+elif [ -f "package.json" ] && command -v npm >/dev/null 2>&1; then
+    if npm test 2>&1 | tee /tmp/test_output.txt; then
+        echo "   ✅ All tests passed"
+        TEST_PASSED=true
+    else
+        echo "   ❌ Some tests failed"
+        ERRORS=$((ERRORS + 1))
     fi
+elif [ -f "requirements.txt" ] && command -v pytest >/dev/null 2>&1; then
+    if pytest -q 2>&1 | tee /tmp/test_output.txt; then
+        echo "   ✅ All tests passed"
+        TEST_PASSED=true
+    else
+        echo "   ❌ Some tests failed"
+        ERRORS=$((ERRORS + 1))
+    fi
+else
+    echo "   ⚠️  No tests found or test runner not available"
+    echo "   💡 Recommended: Add tests (target: 70%+ coverage)"
 fi
 
-# Check commit message quality (conventional commits)
-COMMIT_MSG=$(git log -1 --format=%s 2>/dev/null || echo "")
-if echo "$COMMIT_MSG" | grep -E "^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .+" >/dev/null; then
-    QUALITY_SCORE=$((QUALITY_SCORE + 25))
-fi
+# 4. DORA Metrics Collection
+echo ""
+echo "📋 4. Collecting DORA metrics..."
 
-# Check file changes (smaller changes are generally safer)
-FILES_CHANGED=$(git diff --name-only HEAD~1 2>/dev/null | wc -l || echo "1")
-if [ "$FILES_CHANGED" -le 5 ]; then
-    QUALITY_SCORE=$((QUALITY_SCORE + 25))
-fi
+# Calculate lead time (time since last commit)
+LAST_COMMIT_TIME=$(git log -1 --format=%ct)
+LEAD_TIME=$((PUSH_TIME - LAST_COMMIT_TIME))
+LEAD_TIME_HOURS=$((LEAD_TIME / 3600))
 
-echo "$TIMESTAMP,$COMMIT_HASH,$BRANCH_NAME,$QUALITY_SCORE,$FILES_CHANGED,$LINT_ISSUES" >> .kiro/metrics/change-quality.csv
-echo "✅ Change quality assessed: $QUALITY_SCORE/100"
+# Record metrics
+echo "$PUSH_TIME,$BRANCH,$LEAD_TIME_HOURS,$ERRORS,$TEST_PASSED" >> .kiro/metrics/dora-metrics.csv
 
-# 4. SPACE Framework Metrics Collection
-echo "📊 Collecting SPACE metrics..."
+echo "   📊 Lead time: ${LEAD_TIME_HOURS} hours"
+echo "   📊 Errors: $ERRORS"
+echo "   📊 Tests: $([ "$TEST_PASSED" = true ] && echo "PASSED" || echo "FAILED")"
+
+# 5. SPACE Framework Metrics
+echo ""
+echo "📋 5. SPACE framework metrics..."
 
 # Activity metrics
-COMMITS_TODAY=$(git log --since="1 day ago" --author="$AUTHOR" --oneline 2>/dev/null | wc -l || echo "1")
-COMMITS_WEEK=$(git log --since="1 week ago" --author="$AUTHOR" --oneline 2>/dev/null | wc -l || echo "1")
+COMMITS_TODAY=$(git log --since="1 day ago" --oneline | wc -l)
+FILES_CHANGED=$(git diff --name-only HEAD~1 2>/dev/null | wc -l)
 
-echo "$TIMESTAMP,$AUTHOR,$COMMITS_TODAY,$COMMITS_WEEK,$FILES_CHANGED" >> .kiro/metrics/developer-activity.csv
-echo "✅ Developer activity recorded: $COMMITS_TODAY commits today, $COMMITS_WEEK this week"
+echo "   📈 Commits today: $COMMITS_TODAY"
+echo "   📈 Files changed: $FILES_CHANGED"
 
-# 5. Security Metrics Integration
-echo "📊 Collecting security metrics..."
-SECURITY_SCAN_RESULT="unknown"
-if [ -f ".kiro/audit/security-scan.log" ]; then
-    LAST_SCAN=$(tail -1 .kiro/audit/security-scan.log 2>/dev/null || echo "")
-    if echo "$LAST_SCAN" | grep -q "completed successfully"; then
-        SECURITY_SCAN_RESULT="passed"
-    elif echo "$LAST_SCAN" | grep -q "BLOCKED"; then
-        SECURITY_SCAN_RESULT="failed"
-    fi
-fi
+# Record SPACE metrics
+echo "$PUSH_TIME,activity,$COMMITS_TODAY,$FILES_CHANGED" >> .kiro/metrics/space-metrics.csv
 
-echo "$TIMESTAMP,$COMMIT_HASH,$SECURITY_SCAN_RESULT" >> .kiro/metrics/security-metrics.csv
-echo "✅ Security metrics recorded: $SECURITY_SCAN_RESULT"
-
-# 6. Performance Metrics (Build Time Tracking)
-echo "📊 Tracking build performance..."
-if [ -f "package.json" ]; then
-    BUILD_START=$(date +%s)
-    
-    # Simulate build time check (in real scenario, this would be actual build)
-    if command -v npm >/dev/null 2>&1; then
-        npm run lint --silent >/dev/null 2>&1 || true
-    fi
-    
-    BUILD_END=$(date +%s)
-    BUILD_TIME=$((BUILD_END - BUILD_START))
-    
-    echo "$TIMESTAMP,$COMMIT_HASH,$BUILD_TIME" >> .kiro/metrics/build-performance.csv
-    echo "✅ Build performance recorded: ${BUILD_TIME}s"
-fi
-
-# 7. Generate Summary Report
-echo "📊 Generating metrics summary..."
-cat > .kiro/metrics/latest-push-summary.md << EOF
-# Push Metrics Summary
-
-**Timestamp**: $TIMESTAMP  
-**Commit**: $COMMIT_HASH  
-**Branch**: $BRANCH_NAME  
-**Author**: $AUTHOR  
-
-## DORA Metrics
-- **Lead Time**: $LEAD_TIME_HOURS hours
-- **Quality Score**: $QUALITY_SCORE/100
-- **Files Changed**: $FILES_CHANGED
-- **Security Scan**: $SECURITY_SCAN_RESULT
-
-## SPACE Metrics
-- **Activity**: $COMMITS_TODAY commits today, $COMMITS_WEEK this week
-- **Performance**: Build time ${BUILD_TIME:-"N/A"}s
-
-## Recommendations
-$(if [ "$LEAD_TIME_HOURS" -gt 24 ]; then echo "- ⚠️  Lead time exceeds 1 day target"; fi)
-$(if [ "$QUALITY_SCORE" -lt 75 ]; then echo "- ⚠️  Quality score below recommended threshold"; fi)
-$(if [ "$FILES_CHANGED" -gt 10 ]; then echo "- ⚠️  Large change set - consider breaking into smaller commits"; fi)
-$(if [ "$SECURITY_SCAN_RESULT" != "passed" ]; then echo "- 🔒 Security scan issues need attention"; fi)
-EOF
-
-echo "✅ DORA Metrics Collection Complete!"
-echo "📄 Summary report: .kiro/metrics/latest-push-summary.md"
-
-# Optional: Display key metrics
+# 6. Quality Gates Assessment
 echo ""
-echo "🎯 Key Metrics Summary:"
-echo "   Lead Time: $LEAD_TIME_HOURS hours (Target: <24h)"
-echo "   Quality Score: $QUALITY_SCORE/100 (Target: >75)"
-echo "   Security: $SECURITY_SCAN_RESULT"
-echo "   Activity: $COMMITS_TODAY commits today"
+echo "📋 6. Quality gates assessment..."
 
-exit 0
+# DORA targets check
+if [ $LEAD_TIME_HOURS -le 24 ]; then
+    echo "   ✅ Lead time target met (< 24 hours)"
+else
+    echo "   ⚠️  Lead time exceeds target (> 24 hours)"
+fi
+
+if [ $ERRORS -eq 0 ]; then
+    echo "   ✅ Change failure rate target met (0 errors)"
+else
+    echo "   ⚠️  Quality issues detected"
+fi
+
+# Final Result
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if [ $ERRORS -eq 0 ]; then
+    echo "✅ Quality gate passed successfully"
+    echo "✅ Code is ready for push"
+    echo "📊 DORA metrics recorded"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    # Generate summary
+    echo "📋 Push Summary:"
+    echo "  • Lead Time: ${LEAD_TIME_HOURS}h"
+    echo "  • Quality Issues: $ERRORS"
+    echo "  • Tests: $([ "$TEST_PASSED" = true ] && echo "✅ PASSED" || echo "⚠️ SKIPPED")"
+    echo "  • Branch: $BRANCH"
+    echo ""
+    
+    exit 0
+else
+    echo "❌ Quality gate failed ($ERRORS issues)"
+    echo "❌ Please fix issues before push"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    echo "💡 Quick fixes:"
+    echo "  • Format code with your formatter"
+    echo "  • Run static analysis and fix issues"
+    echo "  • Ensure all tests pass"
+    echo ""
+    
+    # Record failed push
+    echo "$PUSH_TIME,$BRANCH,failed,$ERRORS" >> .kiro/metrics/failed-pushes.csv
+    
+    exit 1
+fi

@@ -1,8 +1,8 @@
 # EARS Requirements Template - Enhanced with Zero-Trust & DORA/SPACE
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
-**التاريخ:** 11 ديسمبر 2025  
-**الحالة:** 📋 **Enhanced template integrating EARS + Zero-Trust + DORA/SPACE metrics**
+**Author:** [Your Development Team Name]  
+**Date:** December 11, 2025  
+**Status:** 📋 **Enhanced template integrating EARS + Zero-Trust + DORA/SPACE metrics**
 
 ---
 
@@ -34,10 +34,10 @@ This enhanced EARS template integrates:
 ```markdown
 # Requirements Document - [Feature Name]
 
-**المشروع:** [Project Name]  
-**التاريخ:** [Date]  
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
-**الحالة:** [Status]
+**Project:** [Your Project Name]  
+**Date:** [Date]  
+**Author:** [Your Development Team Name]  
+**Status:** [Status]
 
 ---
 
@@ -173,9 +173,9 @@ This enhanced EARS template integrates:
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
-**التاريخ:** [Date]  
-**الحالة:** ✅ [Status]
+**Created by:** [Your Development Team Name]  
+**Date:** [Date]  
+**Status:** ✅ [Status]
 ```
 
 ---

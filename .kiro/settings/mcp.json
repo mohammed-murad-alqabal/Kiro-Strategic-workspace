@@ -70,6 +70,7 @@
         "git_log",
         "git_diff",
         "git_diff_unstaged",
+        "git_diff_staged",
         "git_commit",
         "git_add",
         "git_create_branch"
@@ -110,13 +111,19 @@
     },
     "filesystem": {
       "command": "uv",
-      "args": ["tool", "run", "mcp-server-filesystem@latest", "/workspace"],
+      "args": [
+        "tool",
+        "run",
+        "mcp-server-filesystem@latest",
+        "[YOUR_PROJECT_PATH]"
+      ],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR"
       },
       "disabled": true,
       "autoApprove": [],
-      "priority": 95
+      "priority": 95,
+      "note": "Replace [YOUR_PROJECT_PATH] with your actual project path"
     },
     "memory": {
       "command": "uv",
@@ -133,11 +140,24 @@
       "args": ["tool", "run", "mcp-server-brave-search@latest"],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR",
-        "BRAVE_API_KEY": ""
+        "BRAVE_API_KEY": "[YOUR_BRAVE_API_KEY]"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": ["brave_web_search"],
-      "priority": 70
+      "priority": 70,
+      "note": "Add your Brave API key and enable if needed"
+    },
+    "google-maps": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-google-maps@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "GOOGLE_MAPS_API_KEY": "[YOUR_GOOGLE_MAPS_API_KEY]"
+      },
+      "disabled": true,
+      "autoApprove": ["maps_search_places", "maps_geocode"],
+      "priority": 65,
+      "note": "Add your Google Maps API key and enable if needed"
     },
     "sequential-thinking": {
       "command": "uv",
