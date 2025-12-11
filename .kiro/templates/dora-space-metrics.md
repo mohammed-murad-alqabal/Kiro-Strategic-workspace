@@ -249,7 +249,7 @@ echo "$(date),deployment,lead_time,$LEAD_TIME,status,success" >> .kiro/metrics/d
 # Weekly Engineering Metrics Report
 
 **Week of**: [Date Range]
-**Team**: فريق وكلاء تطوير مشروع بصير
+**Team**: [Your Development Team Name]
 
 ## DORA Metrics Summary
 

@@ -1,6 +1,6 @@
 # Kiro Strategic Workspace - Complete Structure Tree
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **الإصدار:** 2.2.0 - Complete Structure Analysis  
 **الحالة:** ✅ **شجرة هيكل شاملة ومفصلة**
@@ -344,7 +344,7 @@ examples/                       # أمثلة عملية
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **الحالة:** ✅ شجرة هيكل شاملة ومكتملة  
 **التقييم:** 10/10 ⭐⭐⭐⭐⭐
