@@ -1,6 +1,6 @@
 # Reference Repositories - Enhanced Collection
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **الإصدار:** 2.0 - Enhanced with Official Sources  
 **الحالة:** ✅ **مجموعة شاملة ومحدثة**
@@ -203,6 +203,6 @@ cp reference_repos/technologies/dora-space/metrics/* .kiro/metrics/
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **آخر تحديث:** 11 ديسمبر 2025  
 **الحالة:** ✅ جاهز للاستخدام الإنتاجي

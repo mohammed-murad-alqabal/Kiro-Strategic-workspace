@@ -1,6 +1,6 @@
 # DORA/SPACE Metrics Framework
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **المصدر:** DORA State of DevOps & Microsoft SPACE Research  
 **الحالة:** ✅ **إطار مقاييس متقدم**
@@ -941,6 +941,6 @@ continuous_monitoring
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **المصدر:** DORA State of DevOps & Microsoft SPACE Research  
 **آخر تحديث:** 11 ديسمبر 2025

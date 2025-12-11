@@ -1,6 +1,6 @@
 # AWS Labs MCP Servers - Official Collection
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **المصدر:** AWS Labs - Official MCP Servers  
 **الحالة:** ✅ **مجموعة رسمية معتمدة**
@@ -411,6 +411,6 @@ AWS Labs MCP Servers تقدم مجموعة شاملة من الأدوات لتط
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **المصدر:** AWS Labs Official MCP Servers  
 **آخر تحديث:** 11 ديسمبر 2025

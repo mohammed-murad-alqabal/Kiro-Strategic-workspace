@@ -1,6 +1,6 @@
 # ISO Standards for Software Development
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **المصدر:** International Organization for Standardization (ISO)  
 **الحالة:** ✅ **معايير دولية معتمدة**
@@ -483,7 +483,7 @@ class ISO25010MetricsCollector {
 - **Document ID**: DOC-ISO-001
 - **Version**: 1.0
 - **Date**: 2025-12-11
-- **Author**: فريق وكلاء تطوير مشروع بصير
+- **Author**: [Your Development Team Name]
 - **Reviewer**: Quality Assurance Team
 - **Approver**: Project Manager
 
@@ -689,6 +689,6 @@ echo "ISO compliance monitoring completed."
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **المصدر:** International Organization for Standardization (ISO)  
 **آخر تحديث:** 11 ديسمبر 2025

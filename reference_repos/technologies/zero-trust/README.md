@@ -1,6 +1,6 @@
 # Zero-Trust Security Architecture
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **المصدر:** NIST SP 800-207 & Industry Best Practices  
 **الحالة:** ✅ **إطار أمني متقدم**
@@ -559,6 +559,6 @@ Zero-Trust Security ليس مجرد تقنية، بل فلسفة أمنية شا
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **المصدر:** NIST SP 800-207 & Industry Best Practices  
 **آخر تحديث:** 11 ��يسمبر 2025

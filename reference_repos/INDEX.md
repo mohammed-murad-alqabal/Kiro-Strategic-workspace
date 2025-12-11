@@ -1,6 +1,6 @@
 # Reference Repositories - Complete Index
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **الإصدار:** 2.0 - Enhanced Collection  
 **الحالة:** ✅ **فهرس شامل ومحدث**
@@ -298,7 +298,7 @@ echo "Update completed successfully!"
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **الحالة:** ✅ فهرس شامل ومكتمل  
 **التقييم:** 10/10 ⭐⭐⭐⭐⭐

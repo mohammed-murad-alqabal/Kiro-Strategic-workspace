@@ -1,6 +1,6 @@
 # Flutter & Dart Development References
 
-**المؤلف:** فريق وكلاء تطوير مشروع بصير  
+**Author:** [Your Development Team Name]  
 **التاريخ:** 11 ديسمبر 2025  
 **المصدر:** Flutter Community & Dart Team  
 **الحالة:** ✅ **مراجع شاملة للتطوير**
@@ -841,6 +841,6 @@ class AuthInterceptor extends Interceptor {
 
 ---
 
-**تم إعداده بواسطة:** فريق وكلاء تطوير مشروع بصير  
+**Created by:** [Your Development Team Name]  
 **المصدر:** Flutter Community & Dart Team  
 **آخر تحديث:** 11 ديسمبر 2025
