@@ -1,13 +1,9 @@
 {
-  "version": "2.0",
+  "version": "2.1",
   "meta": {
-    "maintainer": "[اسم_فريق_التطوير]",
-    "created_at": "2025-11-30T00:00:00Z",
-    "description": "Enhanced workspace-level MCP definitions aligned with the Definitive Engineering Charter: secret-store integration, supply-chain integrity, container scanning, IaC scanning, audit & enforcement, GitOps/K8s adapters, observability probes, and ACLs for agent-level governance."
-  },
-  "secrets_instructions": {
-    "recommended_secret_store": "HashiCorp Vault / AWS Secrets Manager / GCP Secret Manager / Azure Key Vault",
-    "placeholder_convention": "Use SECRET_REF:<path> for secret manager references; use ENV_VAR:<NAME> for CI-provided environment variables. NEVER commit raw secrets."
+    "maintainer": "[Your Development Team Name]",
+    "created_at": "2025-12-11T00:00:00Z",
+    "description": "Enhanced MCP configuration with Zero-Trust security, DORA metrics integration, and enforcement policies"
   },
   "defaults": {
     "timeout_ms": 300000,
@@ -18,168 +14,170 @@
     "audit_enabled": true
   },
   "policies": {
-    "secrets": {
-      "allowed_in_repo": false,
-      "store_policy": "Use SECRET_REF with external secret manager; ENV_VAR allowed only for CI runners; rotate secrets regularly."
-    },
-    "on_error_default": "warn",
-    "backup_on_write": {
-      "enabled": true,
-      "path": ".kiro/.backups/",
-      "naming": "<orig-path>.<timestamp>.backup"
+    "security": {
+      "zero_trust_verification": true,
+      "require_authentication": true,
+      "audit_all_actions": true
     },
     "enforcement": {
       "block_on": [
-        {"rule": "container_scan_failed", "stage": "pre-deploy"},
-        {"rule": "artifact_not_signed", "stage": "pre-deploy"},
-        {"rule": "iac_scan_high_risk", "stage": "pre-merge"},
-        {"rule": "license_non_compliant", "stage": "pre-merge"},
-        {"rule": "doc_not_updated", "stage": "pre-merge"}
+        { "rule": "security_scan_failed", "stage": "pre-deploy" },
+        {
+          "rule": "vulnerability_cvss_high",
+          "threshold": 7.0,
+          "stage": "pre-merge"
+        },
+        { "rule": "artifact_not_signed", "stage": "pre-deploy" },
+        { "rule": "license_non_compliant", "stage": "pre-merge" }
       ],
       "warn_on": [
-        {"rule": "code_quality_threshold", "threshold": "low"}
-      ],
-      "default_decision": "fail_on_security"
+        { "rule": "code_quality_threshold", "threshold": "medium" },
+        { "rule": "test_coverage_low", "threshold": 70 }
+      ]
+    },
+    "dora_metrics": {
+      "track_deployment_frequency": true,
+      "track_lead_time": true,
+      "track_change_failure_rate": true,
+      "track_recovery_time": true
     }
   },
   "audit": {
     "enabled": true,
-    "log_path": ".kiro/mcp-audit.log",
+    "log_path": ".kiro/audit/mcp-audit.log",
     "log_format": "jsonl",
-    "fields": ["timestamp", "caller_agent", "server", "action", "args", "status", "duration_ms", "result_summary", "trace_id"]
-  },
-  "acl": {
-    "global": {
-      "default_allowed_agents": ["project-bootstrapper"],
-      "deny_by_default": true
-    },
-    "per_server": {
-      "code-analysis": { "allowed_agents": ["project-bootstrapper","ci-helper","docs-updater"], "max_calls_per_hour": 200 },
-      "snyk-vuln-scan": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 50 },
-      "container-scan": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 100 },
-      "artifact-sign": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 50 },
-      "observability-probe": { "allowed_agents": ["ci-helper", "health-check-agent"], "max_calls_per_hour": 500 }
-      "doc-generator": { "allowed_agents": ["ci-helper", "docs-updater"], "max_calls_per_hour": 200 },
-      "license-scanner": { "allowed_agents": ["ci-helper"], "max_calls_per_hour": 100 }
-    }
+    "fields": [
+      "timestamp",
+      "agent",
+      "server",
+      "action",
+      "args",
+      "status",
+      "duration_ms",
+      "dora_impact"
+    ]
   },
   "mcpServers": {
-    "vault": {
-      "display_name": "HashiCorp Vault (Secret Store)",
-      "type": "secret-store",
-      "endpoint": "https://vault.example.internal",
-      "auth": {
-        "type": "approle",
-        "role_id_ref": "SECRET_REF:secrets/vault/role_id",
-        "secret_id_ref": "SECRET_REF:secrets/vault/secret_id"
+    "git": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-git@latest", "--repository", "."],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
       },
-      "capabilities": ["get_secret", "renew", "rotate", "generate_short_lived_token"],
-      "healthcheck": {
-        "type": "http",
-        "path": "/v1/sys/health",
-        "method": "GET",
-        "expected_status": 200
-      },
-      "timeout_ms": 20000,
-      "notes": "Use Vault as canonical secrets backend — MCP adapters must resolve SECRET_REF via this connector at runtime. Do not embed secrets in repo."
-    },
-    "snyk-vuln-scan": {
-      "display_name": "Vulnerability Scanner (Snyk CLI)",
-      "type": "cli",
-      "command": "snyk",
-      "args": ["test", "--json"],
-      "cwd": ".",
-      "env": { "SNYK_TOKEN": "SECRET_REF:secrets/kiro/snyk-token" },
-      "auth": { "type": "secret_env", "token_env_var": "SNYK_TOKEN", "token_ref": "SECRET_REF:secrets/kiro/snyk-token" },
-      "capabilities": ["vuln_scan", "generate_report"],
-      "healthcheck": { "type": "exec", "command": "snyk --version", "expect": "^[0-9]+\\.[0-9]+\\.[0-9]+" },
-      "timeout_ms": 180000,
-      "retries": 1,
-      "on_error": "warn"
-    },
-    "container-scan": {
-      "display_name": "Container Scanner (Trivy)",
-      "type": "cli",
-      "command": "trivy",
-      "args": ["image", "--format", "json", "{image}"],
-      "cwd": ".",
-      "env": {},
-      "auth": { "type": "none" },
-      "capabilities": ["container_scan", "generate_sbom"],
-      "healthcheck": { "type": "exec", "command": "trivy --version", "expect": "Trivy" },
-      "timeout_ms": 300000,
-      "retries": 1,
-      "on_error": "fail",
-      "notes": "Run for all container images prior to publish. Results should feed enforcement rules."
-    },
-    "artifact-sign": {
-      "display_name": "Artifact Signer / Verifier (cosign)",
-      "type": "cli",
-      "command": "cosign",
-      "args": ["verify", "{artifact}"],
-      "cwd": ".",
-      "env": {},
-      "auth": { "type": "secret_ref", "key_ref": "SECRET_REF:secrets/cosign/key" },
-      "capabilities": ["verify_signature", "sign_artifact"],
-      "healthcheck": { "type": "exec", "command": "cosign version", "expect": "cosign" },
-      "timeout_ms": 60000,
-      "retries": 1,
-      "on_error": "fail",
-      "notes": "Use cosign/sigstore for artifact provenance. Enforcement blocks deploy if verification fails."
-    },
-    "doc-generator": {
-      "display_name": "Automated Documentation Generator",
-      "type": "cli",
-      "command": "mkdocs build",
-      "capabilities": ["generate_docs", "check_docs_diff"]
-    },
-    "license-scanner": {
-      "display_name": "License Compliance Scanner",
-      "type": "cli",
-      "command": "license-checker",
-      "capabilities": ["scan_dependencies"]
-    },
-    "observability-probe": {
-      "display_name": "Observability Probe (Prometheus/Grafana)",
-      "type": "http",
-      "endpoint": "http://prometheus.example.internal:9090/api/v1/query",
-      "capabilities": ["query_dora_metrics", "check_health_status"],
-      "notes": "Used by agents to query DORA metrics (e.g., Change Failure Rate) before making decisions."
-    },
-    "iac-scan": {
-      "display_name": "IaC Scanner (Checkov / tfsec)",
-      "type": "cli",
-      "command": "checkov",
-      "args": ["-d", "."],
-      "cwd": ".",
-      "env": {},
-      "capabilities": ["iac_scan"],
-      "healthcheck": { "type": "exec", "command": "checkov --version", "expect": "Checkov" },
-      "timeout_ms": 180000,
-      "retries": 0,
-      "on_error": "fail",
-      "notes": "Run at pre-merge and pre-deploy. Classify findings by risk level."
-    }
-  },
-  "validation": {
-    "global_healthcheck": {
-      "sequence": [
-        { "server": "vault", "type": "healthcheck" },
-        { "server": "container-scan", "type": "healthcheck" },
-        { "server": "artifact-sign", "type": "healthcheck" },
-        { "server": "snyk-vuln-scan", "type": "healthcheck" }
+      "disabled": false,
+      "autoApprove": [
+        "git_status",
+        "git_log",
+        "git_diff",
+        "git_diff_unstaged",
+        "git_commit",
+        "git_add",
+        "git_create_branch"
       ],
-      "timeout_ms": 120000,
-      "report_path": ".kiro/mcp-health-report.json"
+      "priority": 90,
+      "disabledTools": []
+    },
+    "fetch": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-fetch@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["fetch"],
+      "priority": 85,
+      "disabledTools": []
+    },
+    "sqlite": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-sqlite@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["query", "list_tables"],
+      "priority": 80
+    },
+    "time": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-time@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["get_current_time", "convert_timezone"],
+      "priority": 75
+    },
+    "filesystem": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-filesystem@latest", "/workspace"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": true,
+      "autoApprove": [],
+      "priority": 95
+    },
+    "memory": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-memory@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["create_entities", "search_nodes", "read_graph"],
+      "priority": 88
+    },
+    "brave-search": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-brave-search@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "BRAVE_API_KEY": ""
+      },
+      "disabled": false,
+      "autoApprove": ["brave_web_search"],
+      "priority": 70
+    },
+    "sequential-thinking": {
+      "command": "uv",
+      "args": ["tool", "run", "mcp-server-sequential-thinking@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["sequentialthinking"],
+      "priority": 92
+    },
+    "aws-knowledge": {
+      "command": "uvx",
+      "args": ["awslabs.aws-knowledge-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["search_aws_documentation"],
+      "priority": 85
+    },
+    "aws-iac": {
+      "command": "uvx",
+      "args": ["awslabs.aws-iac-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["validate_template", "get_resource_docs"],
+      "priority": 83
+    },
+    "context7": {
+      "command": "uvx",
+      "args": ["context7-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["check_compatibility"],
+      "priority": 78
     }
-  },
-  "notes": {
-    "license_non_compliant": "Dependency license is not compliant with policy (e.g., GPLv3).",
-    "doc_not_updated": "Documentation was not updated after a significant code change.",
-    "1": "Replace all SECRET_REF and ENV_VAR placeholders with real secret paths or CI environment variables before using in production.",
-    "2": "Enforcement rules in 'policies.enforcement' must be mirrored by CI pipeline steps that call the corresponding MCP servers and interpret outputs into gating decisions (block/warn).",
-    "3": "Audit logs are written locally to .kiro/mcp-audit.log; consider forwarding to SIEM for retention and correlation.",
-    "4": "Agent ACLs are deny-by-default; explicitly add agents to 'acl.per_server' to grant runtime access to MCP servers.",
-    "5": "Run `kiro-cli mcp healthcheck --config .kiro/settings/mcp.json` after populating secrets to validate adapters."
   }
 }

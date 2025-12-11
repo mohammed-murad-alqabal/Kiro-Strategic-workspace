@@ -1,0 +1,78 @@
+{
+  "version": "2.1.0",
+  "template": "Kiro Strategic Workspace",
+  "created": "2025-12-11T00:00:00Z",
+  "author": "[Your Development Team Name]",
+  "description": "Enterprise-grade Kiro workspace with Zero-Trust security, DORA/SPACE metrics, and EARS methodology",
+
+  "core_principles": {
+    "collaboration_first": true,
+    "zero_trust_security": true,
+    "spec_driven_development": true,
+    "kiss_principle": true,
+    "dora_space_metrics": true,
+    "english_for_code": true
+  },
+
+  "features": {
+    "security": {
+      "zero_trust_scanning": true,
+      "supply_chain_security": true,
+      "artifact_signing": true,
+      "continuous_monitoring": true
+    },
+    "metrics": {
+      "dora_metrics": true,
+      "space_framework": true,
+      "automated_collection": true,
+      "real_time_dashboards": true
+    },
+    "automation": {
+      "git_hooks": true,
+      "quality_gates": true,
+      "security_scanning": true,
+      "metrics_collection": true
+    },
+    "requirements": {
+      "ears_methodology": true,
+      "enhanced_templates": true,
+      "validation_tools": true
+    }
+  },
+
+  "targets": {
+    "dora": {
+      "deployment_frequency": "daily",
+      "lead_time_hours": 24,
+      "change_failure_rate_percent": 15,
+      "recovery_time_hours": 1
+    },
+    "space": {
+      "satisfaction_score": 7.5,
+      "test_coverage_percent": 70,
+      "code_quality_threshold": "high"
+    },
+    "security": {
+      "vulnerability_threshold": 7.0,
+      "scan_coverage_percent": 100,
+      "compliance_rate_percent": 95
+    }
+  },
+
+  "customization": {
+    "team_name_placeholder": "[Your Development Team Name]",
+    "project_name_placeholder": "[Your Project Name]",
+    "replaceable_fields": [
+      "team_name",
+      "project_name",
+      "technology_stack",
+      "metrics_targets"
+    ]
+  },
+
+  "maintenance": {
+    "update_frequency": "monthly",
+    "review_cycle": "quarterly",
+    "metrics_review": "weekly"
+  }
+}
